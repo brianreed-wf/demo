@@ -1,0 +1,63 @@
+<html>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+    	$(document).ready(function() {
+	    	var names = _.uniq([]);
+
+	    	var time = 10;
+	    	var chosenName;
+
+	    	function run() {
+		    	$("#timer-inner").replaceWith('<h1 id="timer-inner">10</h1>');
+		    	var spinner = setInterval(function() {
+		    		var randomName = getRandomName();
+		    		while(randomName == chosenName) {
+		    			randomName = getRandomName();
+		    		}
+		    		chosenName = randomName;
+		    		$("#name-inner").replaceWith('<h1 id="name-inner" style="color:' + getRandomColor() + '">' + randomName + '</h1>');
+		    	}, 100);
+
+		    	var countDown = setInterval(function() {
+		    		time--;
+		    		$("#timer-inner").replaceWith('<h1 id="timer-inner">' + time + '</h1>');
+		    		if (time <= 0) {
+		    			clearInterval(countDown);
+		    			clearInterval(spinner);
+		    		}
+		    	}, 1000);
+	    	}
+
+
+			function getRandomName() {
+				var randomNumber = getRandomNumber(0, names.length);
+				return names[randomNumber];
+			}
+
+			function getRandomNumber(min, max) {
+				return Math.floor((Math.random() * max) + min);
+			}
+
+			function getRandomColor() {
+				return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+			}
+
+			$('#runButton').click(function(){
+				run();
+				$('#runButton').hide();
+			});
+    	})
+    </script>
+	<head></head>
+	<body>
+		<div id="timer">
+			<h1 id="timer-inner"></h1>
+		</div>
+		<div id="name">
+			<h1 id="name-inner"></h1>
+		</div>
+		<button id="runButton">START</button>
+	</body>
+</html>
